@@ -2,12 +2,14 @@ module Test.Main where
 
 import Prelude (Unit, discard, ($), (==))
 
+import CSSTypes
 import CSDom (addRule, fromStyleRuleList, getRules, initialCsDom, updateFromStyleRuleList, getUpdated, getUpdatedFromDom)
-import CSSom (StyleRule(..))
 import Data.List (fromFoldable, head, length)
 import Data.Map as Map
 import Data.Maybe (Maybe(Just))
 import Effect (Effect)
+-- import Effect.Console
+-- import Effect.Class
 import Test.Unit (suite, test)
 import Test.Unit.Assert as Assert
 import Test.Unit.Main (runTest)
@@ -22,6 +24,12 @@ main = runTest do
       let added = addRule initialCsDom new
       let found = head $ getRules added
       Assert.assert "Can get the style out we just put in" $ found == Just new
+    test "getRules 2" do
+      let first = StyleRule "box" "color: red;"
+      let second = StyleRule "hat" "color: green;"
+      let added = addRule (addRule initialCsDom second) first
+      let found = head $ getRules added
+      Assert.assert "Can get the style out we just put in" $ found == Just first
     test "fromStyleRuleList" do
       let items = fromFoldable [StyleRule "first" "color: red;", StyleRule "second" "color: blue;"]
       let csDom = fromStyleRuleList "Hello" items

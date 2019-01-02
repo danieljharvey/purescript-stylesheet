@@ -1,7 +1,6 @@
 "use strict";
 
 exports.putStyle = function(stylesheet) {
-  console.log('putStyle',stylesheet)
   return function(className_) {
     return function(text) {
       var newIndex = findStyle(stylesheet, className_);

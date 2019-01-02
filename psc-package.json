@@ -9,6 +9,7 @@
     "psci-support",
     "foreign",
     "ordered-collections",
-    "test-unit"
+    "test-unit",
+    "refs"
   ]
 }
