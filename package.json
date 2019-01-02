@@ -1,0 +1,13 @@
+{
+  "name": "purs-cssom",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/danieljharvey/purs-cssom.git",
+  "author": "Daniel Harvey <danieljamesharvey@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "start": "pulp -w browserify --to index.js",
+    "test": "pulp test",
+    "test:watch": "pulp -w test"
+  }
+}

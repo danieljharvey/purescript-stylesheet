@@ -1,25 +1,24 @@
 module CSDom where
 
-import Prelude
-import CSSom (CSSClassName, CSSText, StyleRule(..), StyleSheetId)
+import Prelude (flip, (/=))
 import Data.Map as Map
+import Data.Maybe (Maybe(..))
 import Data.List as List
 import Helpers (setToList)
 import Data.Foldable (foldr)
 
-type CssRules = Map.Map CSSClassName CSSText
-
-type CsDom = { styleSheetId :: StyleSheetId
-             , cssRules :: Map.Map CSSClassName CSSText
-}
+import CSSTypes
 
 initialCsDom :: CsDom
 initialCsDom = fromName ""
 
+rulesToList :: CssRules -> List.List StyleRule
+rulesToList cssRules = List.zipWith StyleRule keys values where
+  keys = setToList (Map.keys cssRules)
+  values = Map.values cssRules
+
 getRules :: CsDom -> List.List StyleRule
-getRules csDom = List.zipWith StyleRule keys values where
-  keys = setToList (Map.keys csDom.cssRules) 
-  values = Map.values csDom.cssRules
+getRules csDom = rulesToList csDom.cssRules
 
 addRule :: CsDom -> StyleRule -> CsDom
 addRule csDom (StyleRule cls txt) = csDom { cssRules = Map.insert cls txt rules }
@@ -35,3 +34,13 @@ fromStyleRuleList name = updateFromStyleRuleList (fromName name)
 
 updateFromStyleRuleList :: CsDom -> List.List StyleRule -> CsDom
 updateFromStyleRuleList csDom list = foldr (flip addRule) csDom list
+
+getUpdated :: CssRules -> CssRules -> CssRules
+getUpdated old new = Map.filterWithKey filterFunc new where
+  filterFunc k v = case Map.lookup k old of
+                Just val -> val /= v
+                Nothing -> true
+
+getUpdatedFromDom :: CsDom -> CsDom -> List.List StyleRule
+getUpdatedFromDom oldDom newDom = rulesToList updates where
+  updates = getUpdated oldDom.cssRules newDom.cssRules
