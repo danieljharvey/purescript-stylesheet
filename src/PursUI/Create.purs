@@ -1,13 +1,12 @@
-module CSSom where
+module PursUI.Create where
 
+import Prelude
 import Effect (Effect)
-import Data.List
-import Prelude (Unit, pure, ($), bind, discard, map, const, unit, show)
-import CSDom (fromName, updateFromStyleRuleList, getUpdatedFromDom)
-import ChangeStyle (CSSStyleSheet, putStyle, createStyleTag)
-import CSSTypes (CsDom, CsSom, StyleRule(..), StyleSheetId)
 import Effect.Ref (new, write, read)
-import Effect.Console (log)
+import Data.List (List)
+import PursUI.StyleList (fromName, updateFromStyleRuleList, getUpdatedFromDom)
+import PursUI.Internal.CSSOM (CSSStyleSheet, putStyle, createStyleTag)
+import PursUI.Internal.Types (CsSom, StyleRule(..), StyleSheetId)
 
 putStyleEff :: CSSStyleSheet -> StyleRule -> Effect Unit
 putStyleEff st (StyleRule cl tx) = pure $ putStyle st cl tx
@@ -21,17 +20,17 @@ createStyleTagEff str = pure $ createStyleTag str
 createBlankStyleSheet :: StyleSheetId -> Effect CsSom
 createBlankStyleSheet sId = do
   style <- createStyleTagEff sId
-  newCsDom <- new $ fromName sId
+  newVirtualStyleSheet <- new $ fromName sId
   pure {
     styleSheet: style,
-    csDom: newCsDom
+    csDom: newVirtualStyleSheet
   }
 
 addStyleEff :: CsSom -> List StyleRule -> Effect Unit
 addStyleEff csSom rules = do
     oldDom <- read csSom.csDom
-    let newCsDom = updateFromStyleRuleList oldDom rules
-    let changes = getUpdatedFromDom oldDom newCsDom
+    let newVirtualStyleSheet = updateFromStyleRuleList oldDom rules
+    let changes = getUpdatedFromDom oldDom newVirtualStyleSheet
     putStylesEff csSom.styleSheet changes
-    write newCsDom csSom.csDom
+    write newVirtualStyleSheet csSom.csDom
     pure unit

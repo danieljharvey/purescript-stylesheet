@@ -1,38 +1,38 @@
-module CSDom where
+module PursUI.StyleList where
 
 import Prelude (flip, (/=))
 import Data.Map as Map
 import Data.Maybe (Maybe(..))
 import Data.List as List
-import Helpers (setToList)
-import Data.Foldable (foldr)
+import Data.Foldable
 
-import CSSTypes
+import PursUI.Internal.Types
 
-initialCsDom :: CsDom
-initialCsDom = fromName ""
+-- this module stores and retrieves out set of styles for diffing and sending
+-- to the CSS dom
 
 rulesToList :: CssRules -> List.List StyleRule
 rulesToList cssRules = List.zipWith StyleRule keys values where
-  keys = setToList (Map.keys cssRules)
+  keys = List.fromFoldable (Map.keys cssRules)
   values = Map.values cssRules
 
-getRules :: CsDom -> List.List StyleRule
+getRules :: VirtualStyleSheet -> List.List StyleRule
 getRules csDom = rulesToList csDom.cssRules
 
-addRule :: CsDom -> StyleRule -> CsDom
+addRule :: VirtualStyleSheet -> StyleRule -> VirtualStyleSheet
 addRule csDom (StyleRule cls txt) = csDom { cssRules = Map.insert cls txt rules }
     where rules = csDom.cssRules
 
-fromName :: StyleSheetId -> CsDom
-fromName name = { styleSheetId : name
-               , cssRules : Map.empty
-               }
+fromName :: StyleSheetId -> VirtualStyleSheet
+fromName name 
+  = { virtualStyleSheetId : name
+    , cssRules : Map.empty
+    }
 
-fromStyleRuleList :: StyleSheetId -> List.List StyleRule -> CsDom
+fromStyleRuleList :: StyleSheetId -> List.List StyleRule -> VirtualStyleSheet
 fromStyleRuleList name = updateFromStyleRuleList (fromName name)
 
-updateFromStyleRuleList :: CsDom -> List.List StyleRule -> CsDom
+updateFromStyleRuleList :: VirtualStyleSheet -> List.List StyleRule -> VirtualStyleSheet
 updateFromStyleRuleList csDom list = foldr (flip addRule) csDom list
 
 getUpdated :: CssRules -> CssRules -> CssRules
@@ -41,6 +41,6 @@ getUpdated old new = Map.filterWithKey filterFunc new where
                 Just val -> val /= v
                 Nothing -> true
 
-getUpdatedFromDom :: CsDom -> CsDom -> List.List StyleRule
+getUpdatedFromDom :: VirtualStyleSheet -> VirtualStyleSheet -> List.List StyleRule
 getUpdatedFromDom oldDom newDom = rulesToList updates where
   updates = getUpdated oldDom.cssRules newDom.cssRules

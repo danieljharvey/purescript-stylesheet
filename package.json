@@ -6,8 +6,13 @@
   "author": "Daniel Harvey <danieljamesharvey@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start": "pulp -w browserify --to index.js",
-    "test": "pulp test",
-    "test:watch": "pulp -w test"
+    "start": "spago bundle-app --to index.js -w",
+    "build": "spago build",
+    "test": "spago test",
+    "test:watch": "spago test -w"
+  },
+  "dependencies": {
+    "psc-package": "^3.0.1",
+    "serve": "^11.0.1"
   }
 }

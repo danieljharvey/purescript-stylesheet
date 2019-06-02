@@ -1,4 +1,4 @@
-module ChangeStyle where
+module PursUI.Internal.CSSOM where
 
 import Prelude (Unit)
 

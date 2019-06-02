@@ -1,11 +1,9 @@
-module CSSTypes where
+module PursUI.Internal.Types where
 
-import Prelude ((<>))
+import Prelude
 import Data.Map as Map
-import Data.Show (class Show)
-import Data.Eq (class Eq)
-import Effect.Ref
-import ChangeStyle (CSSStyleSheet)
+import Effect.Ref (Ref)
+import PursUI.Internal.CSSOM (CSSStyleSheet)
 
 type StyleSheetId = String
 type CSSClassName = String
@@ -13,7 +11,7 @@ type CSSText = String
 
 type CsSom = {
   styleSheet :: CSSStyleSheet,
-  csDom :: Ref CsDom
+  csDom :: Ref VirtualStyleSheet
 }
 
 data StyleRule = StyleRule CSSClassName CSSText
@@ -24,6 +22,13 @@ instance showStyleRule :: Show StyleRule where
 
 type CssRules = Map.Map CSSClassName CSSText
 
-type CsDom = { styleSheetId :: StyleSheetId
-             , cssRules :: CssRules
-}
+type VirtualStyleSheet 
+  = { virtualStyleSheetId :: StyleSheetId
+    , cssRules            :: CssRules
+    }
+
+type Sheet (p :: Symbol) 
+  = { sheety :: CssRules }
+
+mySheet :: Sheet "main"
+mySheet = { sheety: mempty }

@@ -1,33 +1,7 @@
-module Main where
+module PursUI (module Exports, module Internal) where
 
-import Data.List (fromFoldable)
-import CSSTypes (StyleRule(..), CsSom)
-import CSSom (createBlankStyleSheet, addStyleEff)
-import Effect (Effect)
-import Effect.Console (log)
-import Effect.Timer (setInterval)
-import Prelude (Unit, bind, discard, pure, unit, ($), show)
+import PursUI.Create (addStyleEff, createBlankStyleSheet, createStyleTagEff, putStyleEff, putStylesEff) as Exports
+import PursUI.StyleList (addRule, fromName, fromStyleRuleList, getRules, getUpdated, getUpdatedFromDom, rulesToList, updateFromStyleRuleList) as Exports
 
-main :: Effect Unit
-main = do
-  styles <- createBlankStyleSheet "poo"
-  _ <- setInterval 100 (changeStyle1 styles)
-  _ <- setInterval 150 (changeStyle2 styles)
-  _ <- setInterval 500 (changeStyle3 styles)
-  pure unit
-
-changeStyle1 :: CsSom -> Effect Unit
-changeStyle1 s = do
-  addStyleEff s $ fromFoldable [ StyleRule "flop" "color: green;", StyleRule "other" "font-size: 100px;"]
-
-changeStyle2 :: CsSom -> Effect Unit
-changeStyle2 s = do
-  let styleRule1 = StyleRule "flop" "color: red;"
-  let styleRule2 = StyleRule "bodydiv" "background-color: grey; font-size: 30px;"
-  addStyleEff s $ fromFoldable [ styleRule1, styleRule2 ]
-
-changeStyle3 :: CsSom -> Effect Unit
-changeStyle3 s = do
-  let styleRule1 = StyleRule "flop" "color: blue; font-size: 30px;"
-  let styleRule2 = StyleRule "bodydiv" "background-color: black; font-size: 10px;"
-  addStyleEff s $ fromFoldable [ styleRule1, styleRule2 ]
+import PursUI.Internal.Types (CSSClassName, CSSText, VirtualStyleSheet, CsSom, CssRules, StyleRule(..), StyleSheetId) as Internal
+import PursUI.Internal.CSSOM (CSSStyleSheet, createStyleTag, putStyle) as Internal

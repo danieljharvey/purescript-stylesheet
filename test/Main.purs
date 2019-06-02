@@ -2,32 +2,31 @@ module Test.Main where
 
 import Prelude (Unit, discard, ($), (==))
 
-import CSSTypes
-import CSDom (addRule, fromStyleRuleList, getRules, initialCsDom, updateFromStyleRuleList, getUpdated, getUpdatedFromDom)
 import Data.List (fromFoldable, head, length)
 import Data.Map as Map
 import Data.Maybe (Maybe(Just))
 import Effect (Effect)
--- import Effect.Console
--- import Effect.Class
 import Test.Unit (suite, test)
 import Test.Unit.Assert as Assert
 import Test.Unit.Main (runTest)
+
+import PursUI
 
 main :: Effect Unit
 main = runTest do
   suite "CSDom" do
     test "addRule" do
-      Assert.assert "Adding a new rule works" $ Map.size ((\a -> a.cssRules) (addRule initialCsDom (StyleRule "box" "color: red;"))) == 1
+      Assert.assert "Adding a new rule works" $
+        Map.size ((\a -> a.cssRules) (addRule (fromName "what") (StyleRule "box" "color: red;"))) == 1
     test "getRules" do
       let new = StyleRule "box" "color: red;"
-      let added = addRule initialCsDom new
+      let added = addRule (fromName "yes") new
       let found = head $ getRules added
       Assert.assert "Can get the style out we just put in" $ found == Just new
     test "getRules 2" do
       let first = StyleRule "box" "color: red;"
       let second = StyleRule "hat" "color: green;"
-      let added = addRule (addRule initialCsDom second) first
+      let added = addRule (addRule (fromName "no") second) first
       let found = head $ getRules added
       Assert.assert "Can get the style out we just put in" $ found == Just first
     test "fromStyleRuleList" do
