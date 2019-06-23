@@ -1,10 +1,10 @@
 module PursUI.StyleList where
 
-import Prelude (flip, (/=))
-import Data.Map as Map
+import Prelude (flip, mempty, (/=))
+import Data.HashMap as HM
 import Data.Maybe (Maybe(..))
 import Data.List as List
-import Data.Foldable
+import Data.Foldable (foldr)
 
 import PursUI.Internal.Types
 
@@ -12,21 +12,20 @@ import PursUI.Internal.Types
 -- to the CSS dom
 
 rulesToList :: CssRules -> List.List StyleRule
-rulesToList cssRules = List.zipWith StyleRule keys values where
-  keys = List.fromFoldable (Map.keys cssRules)
-  values = Map.values cssRules
+rulesToList cssRules 
+  = List.fromFoldable (HM.toArrayBy ClassRule cssRules)
 
 getRules :: VirtualStyleSheet -> List.List StyleRule
 getRules csDom = rulesToList csDom.cssRules
 
 addRule :: VirtualStyleSheet -> StyleRule -> VirtualStyleSheet
-addRule csDom (StyleRule cls txt) = csDom { cssRules = Map.insert cls txt rules }
+addRule csDom (ClassRule cls txt) = csDom { cssRules = HM.insert cls txt rules }
     where rules = csDom.cssRules
 
 fromName :: StyleSheetId -> VirtualStyleSheet
 fromName name 
   = { virtualStyleSheetId : name
-    , cssRules : Map.empty
+    , cssRules : mempty
     }
 
 fromStyleRuleList :: StyleSheetId -> List.List StyleRule -> VirtualStyleSheet
@@ -36,8 +35,8 @@ updateFromStyleRuleList :: VirtualStyleSheet -> List.List StyleRule -> VirtualSt
 updateFromStyleRuleList csDom list = foldr (flip addRule) csDom list
 
 getUpdated :: CssRules -> CssRules -> CssRules
-getUpdated old new = Map.filterWithKey filterFunc new where
-  filterFunc k v = case Map.lookup k old of
+getUpdated old new = HM.filterWithKey filterFunc new where
+  filterFunc k v = case HM.lookup k old of
                 Just val -> val /= v
                 Nothing -> true
 

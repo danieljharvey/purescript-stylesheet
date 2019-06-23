@@ -13,6 +13,7 @@ You can edit this file as you like.
     , "psci-support"
     , "refs"
     , "test-unit"
+    , "unordered-collections"    
     ]
 , packages =
     ./packages.dhall
