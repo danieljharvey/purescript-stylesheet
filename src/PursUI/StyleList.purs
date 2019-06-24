@@ -22,7 +22,9 @@ addRule :: VirtualStyleSheet -> StyleRule -> VirtualStyleSheet
 addRule csDom (ClassRule cls txt) = csDom { cssRules = HM.insert cls txt rules }
     where rules = csDom.cssRules
 
-fromName :: StyleSheetId -> VirtualStyleSheet
+fromName 
+  :: StyleSheetId 
+  -> VirtualStyleSheet
 fromName name 
   = { virtualStyleSheetId : name
     , cssRules : mempty

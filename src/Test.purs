@@ -9,7 +9,7 @@ import PursUI
 
 main :: Effect Unit
 main = do
-  styles <- createBlankStyleSheet "poo"
+  styles <- createBlankStyleSheet (StyleSheetId "poo")
   _ <- setInterval 100 (changeStyle1 styles)
   _ <- setInterval 150 (changeStyle2 styles)
   _ <- setInterval 500 (changeStyle3 styles)

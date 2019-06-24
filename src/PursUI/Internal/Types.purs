@@ -7,8 +7,8 @@ import Effect.Ref (Ref)
 import PursUI.Internal.CSSOM (CSSStyleSheet)
 
 -- this should be type level so all sheets are known statically
-type StyleSheetId 
-  = String
+newtype StyleSheetId 
+  = StyleSheetId String
 
 newtype CSSClassName 
   = CSSClassName String

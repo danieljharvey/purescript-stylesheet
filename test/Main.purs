@@ -17,13 +17,13 @@ main = runTest do
   suite "CSDom" do
     test "addRule" do
       Assert.assert "Adding a new rule works" $
-        HM.size ((\a -> a.cssRules) (addRule (fromName "what") (ClassRule
+        HM.size ((\a -> a.cssRules) (addRule (fromName (StyleSheetId "what")) (ClassRule
                  (CSSClassName "box") (CSSText "color: red;")))) == 1
     test "getRules" do
       let new = ClassRule 
                   (CSSClassName "box") 
                   (CSSText "color: red;")
-      let added = addRule (fromName "yes") new
+      let added = addRule (fromName (StyleSheetId "yes")) new
       let found = head $ getRules added
       Assert.assert "Can get the style out we just put in" $ found == Just new
     test "getRules 2" do
@@ -33,7 +33,7 @@ main = runTest do
       let second = ClassRule 
                     (CSSClassName "hat")
                     (CSSText "color: green;")
-      let added = addRule (addRule (fromName "no") second) first
+      let added = addRule (addRule (fromName (StyleSheetId "no")) second) first
       let found = head $ getRules added
       Assert.assert "Can get the style out we just put in" $ found == Just first
     test "fromStyleRuleList" do
@@ -44,7 +44,7 @@ main = runTest do
                                   (CSSClassName "second")
                                   (CSSText "color: blue;")
                                ]
-      let csDom = fromStyleRuleList "Hello" items
+      let csDom = fromStyleRuleList (StyleSheetId "Hello") items
       Assert.assert "Builds a convincing thing" $ length (getRules csDom) == 2
       let items2 = fromFoldable [ ClassRule 
                                     (CSSClassName "first")
@@ -53,7 +53,7 @@ main = runTest do
                                     (CSSClassName "first")
                                     (CSSText "color: blue;")
                                 ]
-      let csDom2 = fromStyleRuleList "Hello" items2
+      let csDom2 = fromStyleRuleList (StyleSheetId "Hello") items2
       Assert.assert "Keys overwrite one another" $ length (getRules csDom2) == 1
     test "updateFromClassRuleList" do
       let items = fromFoldable [ ClassRule 
@@ -63,7 +63,7 @@ main = runTest do
                                   (CSSClassName "second")
                                   (CSSText "color: blue;")
                                ]
-      let csDom = fromStyleRuleList "Hello" items
+      let csDom = fromStyleRuleList (StyleSheetId "Hello") items
       Assert.assert "Original stylesheet" $ length (getRules csDom) == 2
       let items2 = fromFoldable [ ClassRule 
                                     (CSSClassName "third")
@@ -82,7 +82,7 @@ main = runTest do
                                   (CSSClassName "second")
                                   (CSSText "color: blue;")
                                ]
-      let csDom = fromStyleRuleList "Hello" items
+      let csDom = fromStyleRuleList (StyleSheetId "Hello") items
       Assert.assert "Two identical sheets return nothing" $ HM.size (getUpdated csDom.cssRules csDom.cssRules) == 0
     test "getUpdated when different keys" do
       let items = fromFoldable [ ClassRule 
@@ -96,8 +96,8 @@ main = runTest do
                                     (CSSClassName "third")
                                     (CSSText "color: blue;")
                                 ]
-      let csDom = fromStyleRuleList "Hello" items
-      let csDom2 = fromStyleRuleList "Hello2" items2
+      let csDom = fromStyleRuleList (StyleSheetId "Hello") items
+      let csDom2 = fromStyleRuleList (StyleSheetId "Hello2") items2
       Assert.assert "One sheet with a new key returns the difference" $ HM.size (getUpdated csDom.cssRules csDom2.cssRules) == 1
     test "getUpdated when different values" do
       let items = fromFoldable [ ClassRule 
@@ -108,8 +108,8 @@ main = runTest do
                                     (CSSClassName "first")
                                     (CSSText "color: blue;")
                                 ]
-      let csDom = fromStyleRuleList "Hello" items
-      let csDom2 = fromStyleRuleList "Hello2" items2
+      let csDom = fromStyleRuleList (StyleSheetId "Hello") items
+      let csDom2 = fromStyleRuleList (StyleSheetId "Hello2") items2
       Assert.assert "One sheet with a new key returns the difference" $ HM.size (getUpdated csDom.cssRules csDom2.cssRules) == 1
     test "getUpdatedFromDom" do
       let items = fromFoldable [ ClassRule 
@@ -120,6 +120,6 @@ main = runTest do
                                   (CSSClassName "first") 
                                   (CSSText "color: blue;")
                                 ]
-      let csDom = fromStyleRuleList "Hello" items
-      let csDom2 = fromStyleRuleList "Hello2" items2
+      let csDom = fromStyleRuleList (StyleSheetId "Hello") items
+      let csDom2 = fromStyleRuleList (StyleSheetId "Hello2") items2
       Assert.assert "Compares two csDoms and returns list" $ (length $ getUpdatedFromDom csDom csDom2) == 1

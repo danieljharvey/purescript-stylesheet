@@ -1,18 +1,14 @@
 "use strict";
 
-exports.putStyle = function(stylesheet) {
-  return function(className_) {
-    return function(text) {
-      var newIndex = findStyle(stylesheet, className_);
-      if (newIndex > -1) {
-        deleteRule(stylesheet, newIndex);
-      }
-      insertRule(stylesheet, className_, text);
-    }
+exports.putStyleJS = function(stylesheet, className_, text) {
+  var newIndex = findStyle(stylesheet, className_);
+  if (newIndex > -1) {
+    deleteRule(stylesheet, newIndex);
   }
+  insertRule(stylesheet, className_, text);
 }
 
-exports.createStyleTag = function(id) {
+exports.createStyleTagJS = function(id) {
   var css = "";
   var head = document.head || document.getElementsByTagName("head")[0];
   var style = document.createElement("style");
