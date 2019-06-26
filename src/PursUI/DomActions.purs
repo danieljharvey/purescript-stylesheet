@@ -1,11 +1,12 @@
-module PursUI.Internal.DomActions where
+module PursUI.DomActions where
 
-import Prelude (Unit)
 import Effect (Effect)
-import Effect.Uncurried (runEffectFn1, runEffectFn3)
-import PursUI.Internal.Types
-import PursUI.Internal.CSSOM (CSSStyleSheet, createStyleTagJS, putStyleJS)
+import Effect.Uncurried (runEffectFn1)
+import PursUI.Types.Primitives
+import PursUI.DOM.EditRules (CSSStyleSheet)
+import PursUI.DOM.CreateStyleSheet (createStyleTagJS)
 
+{-
 putStyle 
   :: CSSStyleSheet
   -> CSSClassName
@@ -13,6 +14,8 @@ putStyle
   -> Effect Unit
 putStyle stylesheet (CSSClassName _className) (CSSText text)
   = runEffectFn3 putStyleJS stylesheet _className text
+
+-}
 
 ---
 

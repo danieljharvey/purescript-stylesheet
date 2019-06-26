@@ -1,8 +1,8 @@
-module StyleLens where
+module PursUI.StyleLens where
 
-import Prelude (class Monoid, class Semigroup, flap, map, mempty, pure, show, ($), (<<<), (<>))
+import Prelude (class Monoid, class Semigroup, class Show, flap, map, mempty, pure, show, ($), (<<<), (<>))
 import Data.Foldable (foldr)
-import PursUI.Internal.Types
+import PursUI.Types.Primitives
 
 ---
 
@@ -38,6 +38,11 @@ data StyleRule
   = ClassRule CSSText
   | MediaRule MediaQueryText StyleRuleSet
 
+instance showStyleRule :: Show StyleRule where
+  show (ClassRule (CSSText s)) = "ClassRule: " <> s
+  show (MediaRule (MediaQueryText t) rule)
+    = "MediaQuery: " <> t <> " { " <> show rule <> " } "
+
 newtype StyleRuleSet
   = StyleRuleSet (Array StyleRule)
 
@@ -48,6 +53,7 @@ mediaRule :: MediaQueryText -> StyleRuleSet -> StyleRuleSet
 mediaRule queryStr subStyle
   = StyleRuleSet <<< pure $ MediaRule queryStr subStyle
 
+derive newtype instance showStyleRuleSet      :: Show StyleRuleSet
 derive newtype instance semigroupStyleRuleSet :: Semigroup StyleRuleSet
 derive newtype instance monoidStyleRuleSet    :: Monoid StyleRuleSet
 
@@ -88,30 +94,9 @@ makeStyle
   <> media "max-width: 800px"
       (str "color: red;")
 
-{-
-renderStyle 
-  :: forall props
-   . props
-  -> StyleMaker props 
-  -> StyleRuleMaker
-renderStyle props (StyleMaker styles)
-  = foldr (<>) mempty $ flap (map everythingRenderer styles) props
+b :: StyleRuleSet
+b = processStyle makeStyle { size: 10, opened: false }
 
-makeRenderer 
-  :: forall props
-   . CSSRule props 
-  -> props 
-  -> StyleRuleMaker
-makeRenderer rule p 
-  = case rule of
-      Const s -> s
-      Lens a  -> a p
+c :: StyleRuleSet
+c = processStyle makeStyle { size: 200, opened: true }
 
-
-b :: CSSText
-b = renderStyle { size: 10, opened: false } makeStyle
-
-c :: CSSText
-c = renderStyle { size: 200, opened: true } makeStyle
-
--}

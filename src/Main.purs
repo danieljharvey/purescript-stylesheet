@@ -1,9 +1,11 @@
-module PursUI (module Exports, module Internal) where
+module PursUI (module Types, module DOM, module Internal) where
 
-import PursUI.Create (addStyleEff, createBlankStyleSheet, putStyleEff, putStylesEff) as Exports
-import PursUI.StyleList (addRule, fromName, fromStyleRuleList, getRules, getUpdated, getUpdatedFromDom, rulesToList, updateFromStyleRuleList) as Exports
+import PursUI.Types.Primitives as Types
+import PursUI.Types.VirtualStyleSheet as Types
+import PursUI.Types.PursUI as Types
 
-import PursUI.Internal.Types (CSSClassName(..), CSSText(..), CssRules, PursUI,
-StyleRule(..), StyleSheetId(..), VirtualStyleSheet) as Internal
-import PursUI.Internal.CSSOM (CSSStyleSheet) as Internal
-import PursUI.Internal.DomActions (createStyleTag, putStyle) as Internal
+import PursUI.DOM.EditRules as DOM
+import PursUI.DOM.CreateStyleSheet as DOM
+
+import PursUI.DomActions as Internal
+import PursUI.StyleLens as Internal

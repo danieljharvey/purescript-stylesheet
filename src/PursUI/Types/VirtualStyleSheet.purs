@@ -1,9 +1,7 @@
-module PursUI.Internal.Types.VirtualStyleSheet where
+module PursUI.Types.VirtualStyleSheet where
 
 import Prelude (class Monoid, class Semigroup, mempty, (<>))
-import PursUI.Internal.Types
-import Data.Array as Array
-import Data.Foldable
+import PursUI.Types.Primitives
 import Data.HashMap as HM
 import Data.Symbol (class IsSymbol, SProxy(..), reflectSymbol)
 
@@ -31,20 +29,3 @@ getStyleSheetId _
   = StyleSheetId (reflectSymbol (SProxy :: SProxy s))
 
 ---
-
-getRules
-  :: forall s
-   . VirtualStyleSheet s
-  -> Array StyleRule
-getRules (MkVirtualStyleSheet rules) 
-  = Array.fromFoldable (HM.toArrayBy ClassRule rules)
-
---- store items in the hashmap
-
-fromStyleRules
-  :: forall s t
-   . Foldable t
-  => t StyleRule
-  -> VirtualStyleSheet s
-fromStyleRules rules
-  = MkVirtualStyleSheet (fromFoldable rules)

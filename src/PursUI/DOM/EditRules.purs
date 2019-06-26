@@ -1,4 +1,4 @@
-module PursUI.Internal.EditRules where
+module PursUI.DOM.EditRules where
 
 import Prelude (Unit)
 import Effect.Uncurried

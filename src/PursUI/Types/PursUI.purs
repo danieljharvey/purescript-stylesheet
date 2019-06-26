@@ -1,14 +1,14 @@
-module PursUI.Internal.Types.PursUI (PursUI, readVirtualStyleSheet, getCSSStyleSheet, createBlankStyleSheet) where
+module PursUI.Types.PursUI (PursUI, readVirtualStyleSheet, getCSSStyleSheet, createBlankStyleSheet) where
 
 import Prelude
 
 import Data.Symbol (class IsSymbol, SProxy(..), reflectSymbol)
 import Effect (Effect)
 import Effect.Ref (Ref, modify_, new, read)
-import PursUI.Internal.CSSOM (CSSStyleSheet)
-import PursUI.Internal.DomActions (createStyleTag)
-import PursUI.Internal.Types (StyleSheetId(..))
-import PursUI.Internal.Types.VirtualStyleSheet (VirtualStyleSheet)
+import PursUI.DOM.EditRules (CSSStyleSheet)
+import PursUI.DomActions (createStyleTag)
+import PursUI.Types.Primitives (StyleSheetId(..))
+import PursUI.Types.VirtualStyleSheet (VirtualStyleSheet)
 
 data PursUI (p :: Symbol)
   = PursUI 

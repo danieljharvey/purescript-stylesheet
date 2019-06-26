@@ -2,17 +2,10 @@
   "name": "purs-cssom",
   "version": "1.0.0",
   "main": "index.js",
-  "repository": "https://github.com/danieljharvey/purs-cssom.git",
-  "author": "Daniel Harvey <danieljamesharvey@gmail.com>",
+  "repository": "https://github.com/danieljharvey/purs-cssom",
+  "author": "Daniel Harvey <daniel.harvey@habito.com>",
   "license": "MIT",
   "scripts": {
-    "start": "spago bundle-app --to index.js -w",
-    "build": "spago build",
-    "test": "spago test",
-    "test:watch": "spago test -w"
-  },
-  "dependencies": {
-    "psc-package": "^3.0.1",
-    "serve": "^11.0.1"
+    "pscid:build": "spago build"
   }
 }

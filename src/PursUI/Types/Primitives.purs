@@ -1,4 +1,4 @@
-module PursUI.Internal.Types where
+module PursUI.Types.Primitives where
 
 import Prelude
 

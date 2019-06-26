@@ -1,7 +1,7 @@
-module PursUI.Internal.CreateStyleSheet where
+module PursUI.DOM.CreateStyleSheet where
 
 import Effect.Uncurried (EffectFn1)
-import PursUI.Internal.CSSOM (CSSStyleSheet)
+import PursUI.DOM.EditRules (CSSStyleSheet)
 
 foreign import createStyleTagJS 
   :: EffectFn1 String CSSStyleSheet
