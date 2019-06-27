@@ -1,7 +1,6 @@
 module PursUI.StyleLens where
 
-import Prelude (class Monoid, class Semigroup, class Show, flap, map, mempty, pure, show, ($), (<<<), (<>))
-import Data.Foldable (foldr)
+import Prelude (class Monoid, class Semigroup, class Show, flap, map, pure, show, ($), (<<<), (<>))
 import PursUI.Types.Primitives
 
 ---
@@ -34,24 +33,40 @@ media queryStr subStyle
 -- output
 -- friendly format for putting into cssom
 
-data StyleRule
-  = ClassRule CSSText
-  | MediaRule MediaQueryText StyleRuleSet
+-- these are split out so when we filter one kind out we can represent the
+-- separate ones on the type level
+data RuleType
+  = ClassType ClassRule
+  | MediaType MediaRule
 
-instance showStyleRule :: Show StyleRule where
-  show (ClassRule (CSSText s)) = "ClassRule: " <> s
-  show (MediaRule (MediaQueryText t) rule)
-    = "MediaQuery: " <> t <> " { " <> show rule <> " } "
+instance showRuleType :: Show RuleType where
+  show (ClassType rule) = "ClassType: " <> show rule
+  show (MediaType rule) = "MediaType: " <> show rule
+
+newtype ClassRule
+  = ClassRule CSSText
+
+derive newtype instance showClassRule :: Show ClassRule
+
+data MediaRule 
+  = MediaRule MediaQueryText (Array RuleType)
+
+instance showMediaRule :: Show MediaRule where
+  show (MediaRule query rules) 
+    = "MediaRule: " <> show query <> ", " <> show rules
 
 newtype StyleRuleSet
-  = StyleRuleSet (Array StyleRule)
+  = StyleRuleSet (Array RuleType)
 
-classRule :: CSSText -> StyleRuleSet
-classRule = StyleRuleSet <<< pure <<< ClassRule
+wrapInRuleSet :: Array RuleType -> StyleRuleSet
+wrapInRuleSet = StyleRuleSet
 
-mediaRule :: MediaQueryText -> StyleRuleSet -> StyleRuleSet
-mediaRule queryStr subStyle
-  = StyleRuleSet <<< pure $ MediaRule queryStr subStyle
+classRule :: CSSText -> RuleType
+classRule = ClassType <<< ClassRule
+
+mediaRule :: MediaQueryText -> Array RuleType -> RuleType
+mediaRule queryStr subStyles
+  = MediaType $ MediaRule queryStr subStyles
 
 derive newtype instance showStyleRuleSet      :: Show StyleRuleSet
 derive newtype instance semigroupStyleRuleSet :: Semigroup StyleRuleSet
@@ -62,14 +77,55 @@ processStyle
    . CSSRuleSet props
   -> props
   -> StyleRuleSet
-processStyle (CSSRuleSet styles) props
-  = foldr (<>) mempty $ flap (map renderer styles) props
+processStyle ruleSet props
+  = wrapInRuleSet (process ruleSet)
   where
+    process :: CSSRuleSet props -> Array RuleType
+    process (CSSRuleSet styles')
+     = flap (map renderer styles') props
+    
     renderer style props'
       = case style of
           Const string    -> classRule string
           Lens f          -> classRule (f props')
-          MediaQuery s as -> mediaRule s (processStyle as props')
+          MediaQuery s as -> mediaRule s (process as)
+
+-- for now we'll discard media query ones
+-- and just output the basic bullshit
+
+outputClassRule
+  :: ClassRule
+  -> String
+outputClassRule rule
+  = ".blah { " <> show rule <> "}"
+
+{-
+outputStyleRuleSet
+  :: StyleRuleSet
+  -> String
+outputStyleRuleSet (StyleRuleSet items)
+  = foldr (<>) mempty (map (outputClassRule <<< filterClassRules) items)
+  -}
+
+
+{-
+
+expected:
+
+.hash {
+  background-color: black;
+  height: 100px;
+  width: 100px;
+  border: none;
+}
+
+@media (max-width: 600px) {
+  .hash2 {
+    color: red;
+  }
+}
+
+-}
 
 ---
 
@@ -94,9 +150,10 @@ makeStyle
   <> media "max-width: 800px"
       (str "color: red;")
 
+{-
 b :: StyleRuleSet
 b = processStyle makeStyle { size: 10, opened: false }
 
 c :: StyleRuleSet
 c = processStyle makeStyle { size: 200, opened: true }
-
+  -}

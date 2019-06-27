@@ -19,6 +19,7 @@ newtype CSSText =
 
 derive newtype instance eqCSSText :: Eq CSSText
 derive newtype instance ordCSSText :: Ord CSSText
+derive newtype instance showCSSText :: Show CSSText
 derive newtype instance semigroupCSSText :: Semigroup CSSText
 derive newtype instance monoidCSSText :: Monoid CSSText
 
@@ -29,3 +30,4 @@ derive newtype instance eqMediaQueryText :: Eq MediaQueryText
 derive newtype instance ordMediaQueryText :: Ord MediaQueryText
 derive newtype instance semigroupMediaQueryText :: Semigroup MediaQueryText
 derive newtype instance monoidMediaQueryText :: Monoid MediaQueryText
+derive newtype instance showMediaQueryText :: Show MediaQueryText
