@@ -1,8 +1,8 @@
 module PursUI.StyleLens where
 
-import Prelude (class Monoid, class Semigroup, class Show, flap, map, pure, show, ($), (<<<), (<>))
+import Prelude (class Monoid, class Semigroup, class Show, flap, map, mempty, pure, show, ($), (<<<), (<>))
 import PursUI.Types.Primitives
-
+import Data.Foldable (foldr)
 ---
 
 -- input
@@ -47,6 +47,8 @@ newtype ClassRule
   = ClassRule CSSText
 
 derive newtype instance showClassRule :: Show ClassRule
+derive newtype instance semigroupClassRule :: Semigroup ClassRule
+derive newtype instance monoidClassRule :: Monoid ClassRule
 
 data MediaRule 
   = MediaRule MediaQueryText (Array RuleType)
@@ -99,13 +101,25 @@ outputClassRule
 outputClassRule rule
   = ".blah { " <> show rule <> "}"
 
-{-
-outputStyleRuleSet
-  :: StyleRuleSet
+filterBasicRules :: StyleRuleSet -> Array ClassRule
+filterBasicRules (StyleRuleSet rules)
+  = foldr fold [] rules
+  where
+    fold rule as
+      = as <> case rule of
+                ClassType a -> [a]
+                _           -> [] 
+
+renderBasic
+  :: forall props
+   . CSSRuleSet props
+  -> props
   -> String
-outputStyleRuleSet (StyleRuleSet items)
-  = foldr (<>) mempty (map (outputClassRule <<< filterClassRules) items)
-  -}
+renderBasic ruleSet props
+  = outputClassRule $ foldr (<>) mempty rules
+  where
+    rules
+      = filterBasicRules (processStyle ruleSet props) 
 
 
 {-
@@ -136,6 +150,11 @@ type Props
     , opened :: Boolean
     }
 
+testProps :: Props
+testProps
+  = { size: 10
+    , opened: true
+    }
 
 makeStyle :: CSSRuleSet Props
 makeStyle

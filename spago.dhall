@@ -6,6 +6,7 @@ You can edit this file as you like.
     "purs-js"
 , dependencies =
     [ "console"
+    , "debug"
     , "effect"
     , "foreign"
     , "ordered-collections"

@@ -9,3 +9,6 @@
 /.purs*
 /.psa*
 /.spago/
+
+# test output
+index.js

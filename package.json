@@ -6,6 +6,10 @@
   "author": "Daniel Harvey <daniel.harvey@habito.com>",
   "license": "MIT",
   "scripts": {
-    "pscid:build": "spago build"
+    "pscid:build": "spago build",
+    "build:test": "spago bundle-app --main Testing --to index.js"
+  },
+  "dependencies": {
+    "purescript": "^0.13.2"
   }
 }
