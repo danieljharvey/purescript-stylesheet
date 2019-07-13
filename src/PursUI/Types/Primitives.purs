@@ -52,6 +52,12 @@ data InsertRule
 instance showInsertRule :: Show InsertRule where
   show (InsertRule css text) = show css <> " { " <> show text <> " }"
 
+data InsertMediaRule
+  = InsertMediaQuery MediaQueryText (Array InsertMediaRule)
+  | InsertStyleRule InsertRule
+
+
+
 -- rule along with helpful things
 type UnpackedRule a 
   = { id       :: Int

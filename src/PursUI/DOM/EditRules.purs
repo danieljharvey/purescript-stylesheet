@@ -37,6 +37,10 @@ foreign import getFilteredRuleListJS
 foreign import insertMediaRuleRuleJS
   :: EffectFn2 CSSMediaRule String Unit
 
+-- | Delete a style that applies to a media rule only
+foreign import deleteMediaRuleRuleJS
+  :: EffectFn2 CSSMediaRule Int Unit
+
 -- | Get the selector text of a CSSStyleRule
 foreign import getStyleRuleSelectorTextJS
   :: EffectFn1 CSSStyleRule String

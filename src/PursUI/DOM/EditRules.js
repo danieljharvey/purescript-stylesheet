@@ -29,6 +29,10 @@ exports.insertMediaRuleRuleJS = function(mediaRule, text) {
   mediaRule.insertRule(text, 0);
 }
 
+exports.deleteMediaRuleRuleJS = function(mediaRule, index) {
+  mediaRule.deleteRule(index)
+}
+
 exports.getMediaRuleRuleListJS = function(mediaRule) {
   return mediaRule.cssRules;
 }

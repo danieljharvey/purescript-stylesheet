@@ -4,7 +4,7 @@ import Prelude (Unit, (<$>))
 import Effect (Effect)
 import Effect.Uncurried (runEffectFn1, runEffectFn2)
 import PursUI.Types.Primitives
-import PursUI.DOM.EditRules (CSSMediaRule, CSSRuleList, CSSRules, CSSStyleRule, CSSStyleSheet, deleteRuleJS, getFilteredRuleListJS, getMediaRuleMediaTextJS, getMediaRuleRuleListJS, getStyleRuleDeclarationTextJS, getStyleRuleSelectorTextJS, getStyleSheetRuleListJS, insertMediaRuleRuleJS, insertRuleJS)
+import PursUI.DOM.EditRules (CSSMediaRule, CSSRuleList, CSSRules, CSSStyleRule, CSSStyleSheet, deleteMediaRuleRuleJS, deleteRuleJS, getFilteredRuleListJS, getMediaRuleMediaTextJS, getMediaRuleRuleListJS, getStyleRuleDeclarationTextJS, getStyleRuleSelectorTextJS, getStyleSheetRuleListJS, insertMediaRuleRuleJS, insertRuleJS)
 import PursUI.DOM.CreateStyleSheet (createStyleTagJS)
 
 {-
@@ -52,6 +52,13 @@ deleteRule
   -> Int
   -> Effect Unit
 deleteRule = runEffectFn2 deleteRuleJS
+
+-- | Delete a style from a media query by it's Id
+deleteMediaRuleRule
+  :: CSSMediaRule
+  -> Int
+  -> Effect Unit
+deleteMediaRuleRule = runEffectFn2 deleteMediaRuleRuleJS
 
 -- | Get all the rules of a stylesheet, split by type
 getFilteredRuleList

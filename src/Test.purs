@@ -6,7 +6,7 @@ import Data.Traversable (traverse_)
 import Effect (Effect)
 import Effect.Console as Console
 import PursUI
-
+import Debug.Trace
 import Global.Unsafe (unsafeStringify)
 
 main :: Effect Unit
@@ -36,4 +36,18 @@ main = do
   made <- createAndReturnStyleSheetMediaQuery stylesheet 
             (MediaQueryText "only screen and (max-width: 400px)")
   Console.log (unsafeStringify made)
-  pure unit 
+  insertRecursiveIntoStyleSheet stylesheet testItem
+  Console.log(unsafeStringify (spy "ruleList" stylesheet))
+
+testItem :: InsertMediaRule
+testItem = InsertMediaQuery
+              (MediaQueryText "only screen and (max-width: 400px)")
+              [ InsertMediaQuery 
+                  (MediaQueryText "only screen and (max-height: 400px)")
+                  [ InsertStyleRule (InsertRule (CSSSelector ".flop")
+                                                (CSSText "font-size: 200px")
+                                    )
+                  ]
+              ]
+
+
