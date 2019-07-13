@@ -1,6 +1,6 @@
 module PursUI.Tools where
 
-import Prelude (Unit, bind, discard, pure, unit, (==))
+import Prelude
 import Data.Maybe (Maybe(..))
 import Data.Traversable (find, traverse)
 import Effect (Effect)
@@ -25,13 +25,13 @@ insertRuleIntoStyleSheet
   :: CSSStyleSheet
   -> InsertRule
   -> Effect Unit
-insertRuleIntoStyleSheet stylesheet (InsertRule selector text)  = do
+insertRuleIntoStyleSheet stylesheet insertItem@(InsertRule selector text) = do
   ruleList <- getStyleSheetRuleList stylesheet
   found <- findRuleBySelector ruleList selector
   case found of
     Just rule -> deleteRule stylesheet rule.id
     _         -> pure unit
-  insertRule stylesheet ".flop { background-color: blue; }"
+  insertRule stylesheet (show insertItem)
   pure unit
 
 -- | Gets style rules for a rule list and fetches basic data about them
@@ -80,4 +80,16 @@ findMediaQueryByQuery
 findMediaQueryByQuery ruleList query = do
   unpacked <- getUnpackedMediaRules ruleList    
   pure (find (\s -> s.query == query) unpacked)
+
+
+createAndReturnStyleSheetMediaQuery
+  :: CSSStyleSheet
+  -> MediaQueryText
+  -> Effect (Maybe (UnpackedMediaRule CSSMediaRule))
+createAndReturnStyleSheetMediaQuery stylesheet query = do
+  insertRule stylesheet ("@media " <> show query <> " { } ")
+  ruleList <- getStyleSheetRuleList stylesheet
+  findMediaQueryByQuery ruleList query
+
+ 
 

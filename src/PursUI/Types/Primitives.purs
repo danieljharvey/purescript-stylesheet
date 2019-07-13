@@ -21,14 +21,19 @@ derive newtype instance eqCSSSelector :: Eq CSSSelector
 derive newtype instance ordCSSSelector :: Ord CSSSelector
 derive newtype instance hashableCSSSelector :: Hashable CSSSelector
 
+instance showCSSSelector :: Show CSSSelector where
+  show (CSSSelector s) = s
+
 newtype CSSText = 
   CSSText String
 
 derive newtype instance eqCSSText :: Eq CSSText
 derive newtype instance ordCSSText :: Ord CSSText
-derive newtype instance showCSSText :: Show CSSText
 derive newtype instance semigroupCSSText :: Semigroup CSSText
 derive newtype instance monoidCSSText :: Monoid CSSText
+
+instance showCSSText :: Show CSSText where
+  show (CSSText s) = s
 
 newtype MediaQueryText
   = MediaQueryText String
@@ -37,10 +42,15 @@ derive newtype instance eqMediaQueryText :: Eq MediaQueryText
 derive newtype instance ordMediaQueryText :: Ord MediaQueryText
 derive newtype instance semigroupMediaQueryText :: Semigroup MediaQueryText
 derive newtype instance monoidMediaQueryText :: Monoid MediaQueryText
-derive newtype instance showMediaQueryText :: Show MediaQueryText
+
+instance showMediaQueryText :: Show MediaQueryText where
+  show (MediaQueryText s) = s
 
 data InsertRule
   = InsertRule CSSSelector CSSText
+
+instance showInsertRule :: Show InsertRule where
+  show (InsertRule css text) = show css <> " { " <> show text <> " }"
 
 -- rule along with helpful things
 type UnpackedRule a 
