@@ -7,13 +7,6 @@ import Data.Hashable (class Hashable)
 newtype StyleSheetId 
   = StyleSheetId String
 
-newtype CSSClassName 
-  = CSSClassName String
-
-derive newtype instance eqCSSClassName :: Eq CSSClassName
-derive newtype instance ordCSSClassName :: Ord CSSClassName
-derive newtype instance hashableCSSClassName :: Hashable CSSClassName
-
 newtype CSSSelector
   = CSSSelector String
 

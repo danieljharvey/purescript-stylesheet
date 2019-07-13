@@ -5,7 +5,8 @@ import Prelude
 import Data.Symbol (class IsSymbol, SProxy(..), reflectSymbol)
 import Effect (Effect)
 import Effect.Ref (Ref, modify_, new, read)
-import PursUI.DOM.EditRules (CSSStyleSheet)
+import CSSOM.Main (CSSStyleSheet)
+
 import PursUI.DomActions (createStyleTag)
 import PursUI.Types.Primitives (StyleSheetId(..))
 import PursUI.Types.VirtualStyleSheet (VirtualStyleSheet)

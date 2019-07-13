@@ -9,7 +9,7 @@ import Data.Symbol (class IsSymbol, SProxy(..), reflectSymbol)
 -- we add to this
 -- and then it is differed so the real one reflects it
 data VirtualStyleSheet (p :: Symbol)
-  = MkVirtualStyleSheet (HM.HashMap CSSClassName CSSText)
+  = MkVirtualStyleSheet (HM.HashMap CSSSelector CSSText)
 
 instance semigroupVirtualStyleSheet :: Semigroup (VirtualStyleSheet p) where
   append (MkVirtualStyleSheet a) (MkVirtualStyleSheet b)

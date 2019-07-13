@@ -15,6 +15,7 @@ You can edit this file as you like.
     , "refs"
     , "test-unit"
     , "unordered-collections"    
+    , "cssom"
     ]
 , packages =
     ./packages.dhall
