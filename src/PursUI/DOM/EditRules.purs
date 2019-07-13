@@ -6,13 +6,20 @@ import Effect.Uncurried
 foreign import data CSSStyleSheet :: Type
 foreign import data CSSMediaRule  :: Type
 foreign import data CSSStyleRule  :: Type
+foreign import data CSSRuleList   :: Type
 
-type CSSRuleList 
-  = { styleRules :: Array CSSStyleRule
-    , mediaRules :: Array CSSMediaRule
+type IndexedRule a
+  = { id   :: Int
+    , item :: a
+    }
+
+type CSSRules 
+  = { styleRules :: Array (IndexedRule CSSStyleRule)
+    , mediaRules :: Array (IndexedRule CSSMediaRule)
     } 
 
-
+foreign import getStyleSheetRuleListJS
+  :: EffectFn1 CSSStyleSheet CSSRuleList 
 
 -- | Insert a style rule into a stylesheet via string
 foreign import insertRuleJS 
@@ -23,22 +30,24 @@ foreign import deleteRuleJS
   :: EffectFn2 CSSStyleSheet Int Unit
 
 -- | Get all the rules of a stylesheet, split by type
-foreign import getStylesheetRulesJS 
-  :: EffectFn1 CSSStyleSheet CSSRuleList
+foreign import getFilteredRuleListJS 
+  :: EffectFn1 CSSRuleList CSSRules
 
+-- | Insert a style that applies to a media rule only
+foreign import insertMediaRuleRuleJS
+  :: EffectFn2 CSSMediaRule String Unit
 
 -- | Get the selector text of a CSSStyleRule
-foreign import getStyleRuleSelectorText
+foreign import getStyleRuleSelectorTextJS
   :: EffectFn1 CSSStyleRule String
 
 -- | Get the Style Declaration of a CSSStyleRule
-foreign import getStyleRuleDeclarationText
+foreign import getStyleRuleDeclarationTextJS
   :: EffectFn1 CSSStyleRule String
 
--- | Get the CSSRuleList inside a MediaRule
-foreign import getMediaRuleStyleRules
-  :: EffectFn1 CSSMediaRule CSSRuleList 
+foreign import getMediaRuleRuleListJS
+  :: EffectFn1 CSSMediaRule CSSRuleList
 
 -- | Get the rule from the Media Rule
-foreign import getMediaRuleMediaText
+foreign import getMediaRuleMediaTextJS
   :: EffectFn1 CSSMediaRule String

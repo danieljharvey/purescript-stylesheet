@@ -1,5 +1,10 @@
 "use strict";
 
+exports.getStyleSheetRuleListJS = function(stylesheet) {
+  console.log('stylesheetcssrules', stylesheet.cssRules)
+  return stylesheet.cssRules;
+}
+
 exports.insertRuleJS = function(stylesheet, text) {
   if (stylesheet) {
     stylesheet.insertRule(text);
@@ -12,34 +17,31 @@ exports.deleteRuleJS = function(stylesheet, index) {
   }
 }
 
-exports.getStylesheetRulesJS = function(stylesheet) {
-  if (!stylesheet) {
-    return [];
-  }
-  const rules = stylesheet.rules || stylesheet.cssRules || {};
-  return getFilteredRuleSet(rules)
-};
-
-exports.getStyleRuleSelectorText = function(styleRule) {
+exports.getStyleRuleSelectorTextJS = function(styleRule) {
   return styleRule.selectorText;
 }
 
-exports.getStyleRuleDeclarationText = function(styleRule) {
+exports.getStyleRuleDeclarationTextJS = function(styleRule) {
   return styleRule.style.cssText;
 }
 
-exports.getMediaRuleStyleRules = function(mediaRule) {
-  return getFilteredRuleSet(mediaRule.cssRules) 
+exports.insertMediaRuleRuleJS = function(mediaRule, text) {
+  mediaRule.insertRule(text, 0);
 }
 
-exports.getMediaRuleMediaText = function(mediaRule) {
+exports.getMediaRuleRuleListJS = function(mediaRule) {
+  return mediaRule.cssRules;
+}
+
+exports.getMediaRuleMediaTextJS = function(mediaRule) {
   return mediaRule.media.mediaText;
 }
 
-// helpers
-const getFilteredRuleSet = function(rules) {
+exports.getFilteredRuleListJS = function(rules) {
   const allStyles = Object.keys(rules).map(function(j) {
-    return rules[j];
+    return { id: j
+           , item: rules[j]
+           }
   });
 
   return {
@@ -48,10 +50,12 @@ const getFilteredRuleSet = function(rules) {
   }
 }
 
+// helpers
+//
 const isStyleRule = function(a) {
-  return a.type === 1
+  return a.item.type === 1
 }
 
 const isMediaRule = function(a) {
-  return a.type === 4
+  return a.item.type === 4
 }

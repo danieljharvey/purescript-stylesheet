@@ -14,6 +14,13 @@ derive newtype instance eqCSSClassName :: Eq CSSClassName
 derive newtype instance ordCSSClassName :: Ord CSSClassName
 derive newtype instance hashableCSSClassName :: Hashable CSSClassName
 
+newtype CSSSelector
+  = CSSSelector String
+
+derive newtype instance eqCSSSelector :: Eq CSSSelector
+derive newtype instance ordCSSSelector :: Ord CSSSelector
+derive newtype instance hashableCSSSelector :: Hashable CSSSelector
+
 newtype CSSText = 
   CSSText String
 
@@ -31,3 +38,20 @@ derive newtype instance ordMediaQueryText :: Ord MediaQueryText
 derive newtype instance semigroupMediaQueryText :: Semigroup MediaQueryText
 derive newtype instance monoidMediaQueryText :: Monoid MediaQueryText
 derive newtype instance showMediaQueryText :: Show MediaQueryText
+
+data InsertRule
+  = InsertRule CSSSelector CSSText
+
+-- rule along with helpful things
+type UnpackedRule a 
+  = { id       :: Int
+    , item     :: a
+    , selector :: CSSSelector
+    , ruleText :: CSSText
+    } 
+
+type UnpackedMediaRule a
+  = { id      :: Int
+    , item    :: a
+    , query   :: MediaQueryText
+    }
