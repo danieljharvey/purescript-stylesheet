@@ -9,6 +9,7 @@ You can edit this file as you like.
     , "debug"
     , "effect"
     , "foreign"
+    , "generics-rep"
     , "ordered-collections"
     , "prelude"
     , "psci-support"

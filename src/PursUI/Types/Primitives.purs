@@ -49,8 +49,6 @@ data InsertMediaRule
   = InsertMediaQuery MediaQueryText (Array InsertMediaRule)
   | InsertStyleRule InsertRule
 
-
-
 -- rule along with helpful things
 type UnpackedRule a 
   = { id       :: Int

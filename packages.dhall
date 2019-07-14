@@ -12,8 +12,8 @@ let additions =
         [ "effect"
         , "console"
         ]
-        "../cssom"
-        "v1.0.0"
+        "https://github.com/danieljharvey/purescript-cssom.git"
+        "v0.0.2"
   }
 
 in  upstream // overrides // additions
