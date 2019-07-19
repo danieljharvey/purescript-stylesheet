@@ -1,9 +1,12 @@
 module PursUI.StyleLens where
 
-import Prelude (flap, map, mempty, show, ($), (<>))
+import Prelude (flap, map, mempty, pure, show, ($), (<<<), (<>))
 import PursUI.Types.CSSRuleSet (CSSRule(..), CSSRuleSet(..))
 import PursUI.Types.StyleRuleSet
+import PursUI.Types.Primitives (CSSSelector(..), CSSText, InsertMediaRule(..), InsertRule(..))
+import Data.Array (concatMap)
 import Data.Foldable (foldr)
+import Data.Hashable (hash)
 
 processStyle
   :: forall props
@@ -52,7 +55,37 @@ renderBasic ruleSet props
     rules
       = filterBasicRules (processStyle ruleSet props) 
 
-{-
+createHashedInsertRule :: CSSText -> InsertRule
+createHashedInsertRule css
+  = InsertRule selector css
+  where
+    appendPrefix s
+      = "ps" <> s
+
+    selector
+      = CSSClassSelector <<< appendPrefix <<< show <<< hash $ css
+
+keep :: StyleRuleSet -> Array InsertMediaRule
+keep (StyleRuleSet rules)
+  = foldr fold [] rules
+  where
+    fold rule as
+      = as <> case rule of
+          ClassType (ClassRule a) 
+            -> pure 
+           <<< InsertStyleRule 
+           <<< createHashedInsertRule
+             $ a
+          MediaType (MediaRule query rules')
+            -> pure (InsertMediaQuery query (keep (StyleRuleSet rules')))
+
+getClasses :: InsertMediaRule -> Array CSSSelector
+getClasses (InsertStyleRule (InsertRule selector _))
+  = pure selector 
+getClasses (InsertMediaQuery _ as) 
+  = concatMap getClasses as
+
+{-    
 
 expected:
 

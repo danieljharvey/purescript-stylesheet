@@ -28,7 +28,7 @@ getStyleRuleSelectorText
   :: CSSStyleRule 
   -> Effect CSSSelector
 getStyleRuleSelectorText a
-  = CSSSelector <$> runEffectFn1 getStyleRuleSelectorTextJS a
+  = CSSClassSelector <$> runEffectFn1 getStyleRuleSelectorTextJS a
 
 -- | Get the Style Declaration of a CSSStyleRule
 getStyleRuleDeclarationText
