@@ -7,4 +7,4 @@ import PursUI.Types.CSSRuleSet (CSSRule(..), CSSRuleSet(..), Props, fun, makeSty
 import PursUI.Types.StyleRuleSet (ClassRule(..), MediaRule(..), RuleType(..), StyleRuleSet(..), classRule, mediaRule, wrapInRuleSet) as Types
 
 import PursUI.DomActions (createAndReturnCSSMediaRule, createStyleTag, findMediaQueryByQuery, findRuleBySelector, getFilteredRuleList, getMediaRuleMediaText, getStyleRuleDeclarationText, getStyleRuleSelectorText, getUnpackedMediaRules, getUnpackedStyleRules, insertRecursive, insertRule, unpackMediaRule, unpackRule) as Internal
-import PursUI.StyleLens (getClasses, createHashedInsertRule, filterBasicRules, keep, outputClassRule, processStyle, renderBasic) as Internal
+import PursUI.StyleLens (createHashedInsertRule, getClasses, keep, processStyle) as Internal 
