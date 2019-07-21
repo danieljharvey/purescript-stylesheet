@@ -34,7 +34,7 @@ createHashedInsertRule css
   = InsertRule selector css
   where
     appendPrefix s
-      = "ps" <> s
+      = "ps-" <> s
 
     selector
       = CSSClassSelector <<< appendPrefix <<< show <<< hash $ css

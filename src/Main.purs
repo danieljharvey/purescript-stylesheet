@@ -8,3 +8,4 @@ import PursUI.Types.StyleRuleSet (ClassRule(..), MediaRule(..), RuleType(..), St
 
 import PursUI.DomActions (createAndReturnCSSMediaRule, createStyleTag, findMediaQueryByQuery, findRuleBySelector, getFilteredRuleList, getMediaRuleMediaText, getStyleRuleDeclarationText, getStyleRuleSelectorText, getUnpackedMediaRules, getUnpackedStyleRules, insertRecursive, insertRule, unpackMediaRule, unpackRule) as Internal
 import PursUI.StyleLens (createHashedInsertRule, getClasses, keep, processStyle) as Internal 
+import PursUI.AddStyle (addStyle) as Internal

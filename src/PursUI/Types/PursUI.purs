@@ -1,15 +1,16 @@
-module PursUI.Types.PursUI (PursUI, readVirtualStyleSheet, getCSSStyleSheet, createBlankStyleSheet) where
+module PursUI.Types.PursUI (PursUI, addVirtualStyleSheet, readVirtualStyleSheet, getCSSStyleSheet, createBlankStyleSheet) where
 
-import Prelude
+import Prelude (Unit, bind, mempty, pure, (<>))
 
 import Data.Symbol (class IsSymbol, SProxy(..), reflectSymbol)
+import Data.Traversable (traverse_)
 import Effect (Effect)
-import Effect.Ref (Ref, modify_, new, read)
+import Effect.Ref (Ref, modify, new, read)
 import CSSOM.Main (CSSStyleSheet)
 
-import PursUI.DomActions (createStyleTag)
+import PursUI.DomActions (createStyleTag, insertRecursive)
 import PursUI.Types.Primitives (StyleSheetId(..))
-import PursUI.Types.VirtualStyleSheet (VirtualStyleSheet)
+import PursUI.Types.VirtualStyleSheet
 
 data PursUI (p :: Symbol)
   = PursUI 
@@ -28,8 +29,11 @@ addVirtualStyleSheet
    . PursUI p
   -> VirtualStyleSheet p
   -> Effect Unit
-addVirtualStyleSheet (PursUI cssSheet vsRef) vSheet =
-  modify_ (\oldSheet -> oldSheet <> vSheet) vsRef
+addVirtualStyleSheet (PursUI cssSheet vsRef) vSheet = do
+  oldSheet <- read vsRef
+  newSheet <- modify (\oldSheet' -> oldSheet' <> vSheet) vsRef
+  -- update actual thing  
+  traverse_ (insertRecursive cssSheet) (diff newSheet oldSheet)  
 
 getCSSStyleSheet
   :: forall p
