@@ -1,4 +1,4 @@
-# purescript-styles
+# purescript-stylesheet
 
 ### What is this?
 
@@ -12,7 +12,7 @@ Broadly, yes. Whether it's performant or not is yet to be seen.
 
 Uhh. Sure.
 
-`git clone https://github.com/danieljharvey/purescript-styles`
+`git clone https://github.com/danieljharvey/purescript-stylesheet`
 
 `spago install`
 
