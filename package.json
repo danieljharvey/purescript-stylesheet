@@ -7,8 +7,8 @@
   "license": "MIT",
   "scripts": {
     "pscid:build": "spago build",
-    "build:test": "spago bundle-app --main Testing --to index.js",
-    "build:test:watch": "spago bundle-app --main Testing -w --to index.js"
+    "build": "spago bundle-app --main Testing --to index.js",
+    "build:watch": "spago bundle-app --main Testing -w --to index.js"
   },
   "dependencies": {
     "purescript": "^0.13.2"

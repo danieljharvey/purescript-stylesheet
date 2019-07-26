@@ -1,17 +1,17 @@
 module Testing where
 
-import Prelude
+import Prelude (Unit, bind, discard, pure, show, unit, (<<<), (<>), (>=>), (>>>))
 import Data.Maybe (Maybe(..))
 import Data.Traversable (traverse_)
 import Effect (Effect)
 import Effect.Console as Console
-import PursUI
-import CSSOM.Main
+import Stylesheet
+import CSSOM.Main (deleteRule', getRuleList')
 import Global.Unsafe (unsafeStringify)
 
 main :: Effect Unit
 main = do
-  stylesheet <- createStyleTag (StyleSheetId "test")
+  stylesheet <- createStyleTag (StylesheetId "test")
   _ <- insertRule stylesheet 
           (InsertRule (CSSClassSelector "flop")
                       (CSSText "background-color: green;")

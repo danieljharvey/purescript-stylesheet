@@ -10,10 +10,11 @@ Broadly, yes. Whether it's performant or not is yet to be seen.
 
 ### Can I try it?
 
-Uhh. Sure.
+Uhh. Sure. To see a somewhat terrible looking proof of concept, crack open the
+following incantations:
 
 `git clone https://github.com/danieljharvey/purescript-stylesheet`
 
 `spago install`
 
-`yarn start` and then `open index.html`. Joy!
+`yarn build` and then `open index.html`. Joy!

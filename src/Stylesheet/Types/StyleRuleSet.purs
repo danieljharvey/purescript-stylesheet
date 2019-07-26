@@ -1,9 +1,9 @@
-module PursUI.Types.StyleRuleSet where
+module Stylesheet.Types.StyleRuleSet where
 
 import Prelude (class Eq, class Monoid, class Semigroup, class Show, show, ($), (&&), (<<<), (<>), (==))
  
 import Data.Hashable (class Hashable, hash)
-import PursUI.Types.Primitives
+import Stylesheet.Types.Primitives
 
 -- output
 -- friendly format for putting into cssom

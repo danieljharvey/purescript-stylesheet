@@ -1,9 +1,9 @@
-module PursUI.StyleLens where
+module Stylesheet.Internal.ProcessStyles where
 
 import Prelude (flap, map, pure, show, ($), (<<<), (<>))
-import PursUI.Types.CSSRuleSet (CSSRule(..), CSSRuleSet(..))
-import PursUI.Types.StyleRuleSet
-import PursUI.Types.Primitives (CSSSelector(..), CSSText, InsertMediaRule(..), InsertRule(..))
+import Stylesheet.Types.CSSRuleSet (CSSRule(..), CSSRuleSet(..))
+import Stylesheet.Types.StyleRuleSet
+import Stylesheet.Types.Primitives (CSSSelector(..), CSSText, InsertMediaRule(..), InsertRule(..))
 import Data.Array (concatMap)
 import Data.Foldable (foldr)
 import Data.Hashable (hash)
@@ -26,9 +26,7 @@ processStyle ruleSet props
           Lens f          -> classRule (f props')
           MediaQuery s as -> mediaRule s (process as)
 
--- for now we'll discard media query ones
--- and just output the basic bullshit
-
+-- | This creates a unique hash of the CSS that we'll use to make the classname
 createHashedInsertRule :: CSSText -> InsertRule
 createHashedInsertRule css
   = InsertRule selector css
@@ -39,6 +37,8 @@ createHashedInsertRule css
     selector
       = CSSClassSelector <<< appendPrefix <<< show <<< hash $ css
 
+-- | This commits the rendered StyleRuleSet into InsertMediaRules that we can
+-- | store and apply to the CSSOM
 keep :: StyleRuleSet -> Array InsertMediaRule
 keep (StyleRuleSet rules)
   = foldr fold [] rules
@@ -53,6 +53,8 @@ keep (StyleRuleSet rules)
           MediaType (MediaRule query rules')
             -> pure (InsertMediaQuery query (keep (StyleRuleSet rules')))
 
+-- | Get the generated CSS classes from the CSS. These are generated from
+-- | hashes of the content
 getClasses :: InsertMediaRule -> Array CSSSelector
 getClasses (InsertStyleRule (InsertRule selector _))
   = pure selector 

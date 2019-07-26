@@ -1,20 +1,20 @@
-module PursUI.DomActions where
+module Stylesheet.Internal.DomActions where
 
 import Prelude
 import Data.Maybe (Maybe(..))
 import Data.Traversable (find, traverse, traverse_)
 import Effect (Effect)
 import Effect.Uncurried (runEffectFn1)
-import PursUI.Types.Primitives (CSSSelector(..), CSSText(..), InsertMediaRule(..), InsertRule(..), MediaQueryText(..), StyleSheetId(..), UnpackedMediaRule, UnpackedRule)
+import Stylesheet.Types.Primitives 
 import CSSOM.Main (class HasRuleList, CSSMediaRule, CSSRuleList, CSSRules, CSSStyleRule, CSSStyleSheet, IndexedRule, createStyleTagJS, deleteRule', getFilteredRuleListJS, getMediaRuleMediaTextJS, getRuleList', getStyleRuleDeclarationTextJS, getStyleRuleSelectorTextJS, insertRule')
 
 -- this takes all the raw calls and builds up a few actually useful functions
 -- for CSSOM manipulation
 
 createStyleTag
-  :: StyleSheetId
+  :: StylesheetId
   -> Effect CSSStyleSheet
-createStyleTag (StyleSheetId s)
+createStyleTag (StylesheetId s)
   = runEffectFn1 createStyleTagJS s
 
 -- | Get all the rules of a stylesheet, split by type
