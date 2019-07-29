@@ -4,7 +4,7 @@ import Prelude (discard, pure)
 import Effect (Effect)
 import Data.Foldable (foldMap)
 
-import Stylesheet.Types.Stylesheet (Stylesheet(..), addVirtualStylesheet)
+import Stylesheet.Types.Stylesheet (Stylesheet, addVirtualStylesheet)
 import Stylesheet.Types.CSSRuleSet (CSSRuleSet)
 import Stylesheet.Types.Primitives (CSSSelector)
 import Stylesheet.Types.VirtualStylesheet

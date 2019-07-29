@@ -1,6 +1,6 @@
 module Stylesheet.Internal.DomActions where
 
-import Prelude
+import Prelude (Unit, bind, discard, pure, show, unit, (<$>), (<>), (==))
 import Data.Maybe (Maybe(..))
 import Data.Traversable (find, traverse, traverse_)
 import Effect (Effect)
