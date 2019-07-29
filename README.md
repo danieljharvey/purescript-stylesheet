@@ -18,3 +18,7 @@ following incantations:
 `spago install`
 
 `yarn build` and then `open index.html`. Joy!
+
+### Documentation?
+
+Are you suggesting this is not enough? More docs on [Pursuit](https://pursuit.purescript.org/packages/purescript-stylesheet/0.0.2)
