@@ -9,6 +9,6 @@ import Test.Unit.Main (runTest)
 
 main :: Effect Unit
 main = runTest do
-  suite "CSDom" do
+  suite "Stylesheet" do
     test "addRule" do
       Assert.assert "Seems fine" $ "yes" == "yes"
